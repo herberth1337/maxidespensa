@@ -5,7 +5,18 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('usuario')); } catch { return null; }
+    try {
+      const u = JSON.parse(localStorage.getItem('usuario'));
+      // Si el usuario guardado tiene campos en mayúscula (formato viejo), descartarlo
+      if (u && !u.nombre) {
+        localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
+        return null;
+      }
+      return u;
+    } catch {
+      return null;
+    }
   });
   const [cargando, setCargando] = useState(true);
 
@@ -57,7 +68,15 @@ export const AuthProvider = ({ children }) => {
   }, [usuario]);
 
   return (
-    <AuthContext.Provider value={{ usuario, cargando, login, registro, logout, actualizarUsuario, esAdmin: usuario?.rol === 'admin' }}>
+    <AuthContext.Provider value={{
+      usuario,
+      cargando,
+      login,
+      registro,
+      logout,
+      actualizarUsuario,
+      esAdmin: usuario?.rol === 'admin'
+    }}>
       {children}
     </AuthContext.Provider>
   );
@@ -68,3 +87,6 @@ export const useAuth = () => {
   if (!ctx) throw new Error('useAuth debe usarse dentro de AuthProvider');
   return ctx;
 };
+
+
+
