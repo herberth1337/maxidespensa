@@ -4,37 +4,156 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-base:        #f9fafb;
+  --bg-surface:     #ffffff;
+  --bg-elevated:    #ffffff;
+  --bg-subtle:      #f3f4f6;
+  --bg-muted:       #e5e7eb;
+  --text-primary:   #ffffff;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --border-default: #e2e8f0;
+  --border-muted:   #f1f5f9;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.10);
+}
+
+.dark {
+  --bg-base:        #0a0f1e;
+  --bg-surface:     #111827;
+  --bg-elevated:    #1e2736;
+  --bg-subtle:      #1a2236;
+  --bg-muted:       #253047;
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --border-default: #1e2d45;
+  --border-muted:   #162032;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.5);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.6);
+}
+
 @layer base {
-  * { @apply border-gray-200; }
-  body {
-    @apply font-sans text-gray-800 bg-gray-50;
+  * { @apply border-gray-200 dark:border-gray-700/60; }
+
+  html {
+    transition: background-color 0.4s cubic-bezier(0.4,0,0.2,1), color 0.4s cubic-bezier(0.4,0,0.2,1);
   }
-  h1, h2, h3 { @apply font-display; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    transition: background-color 0.4s cubic-bezier(0.4,0,0.2,1), color 0.4s cubic-bezier(0.4,0,0.2,1);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Syne', sans-serif;
+    color: var(--text-primary);
+    transition: color 0.4s ease;
+  }
+
+  p, span, li, td, th, label, a {
+    transition: color 0.4s ease;
+  }
+
+  ::placeholder { color: var(--text-muted); }
+  ::selection { background: rgba(22,163,74,0.25); color: var(--text-primary); }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md;
+    @apply inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700
+           text-white font-semibold px-6 py-2.5 rounded-xl
+           transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md;
   }
+
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-gray-700 font-semibold px-6 py-2.5 rounded-xl border border-gray-200 transition-all duration-200 active:scale-95;
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-default);
+    @apply inline-flex items-center gap-2 font-semibold px-6 py-2.5 rounded-xl
+           transition-all duration-200 active:scale-95;
   }
+  .btn-secondary:hover { background-color: var(--bg-subtle); }
+
   .btn-danger {
-    @apply bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+    @apply inline-flex items-center gap-2 bg-red-500 hover:bg-red-600
+           text-white font-semibold px-6 py-2.5 rounded-xl
+           transition-all duration-200 active:scale-95;
   }
+
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    @apply rounded-2xl overflow-hidden;
+    transition: background-color 0.4s cubic-bezier(0.4,0,0.2,1),
+                border-color 0.4s cubic-bezier(0.4,0,0.2,1),
+                box-shadow 0.3s ease;
   }
+  .card:hover { box-shadow: var(--shadow-md); }
+
   .input-field {
-    @apply w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white;
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-default);
+    @apply w-full px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
+  .input-field:focus { background-color: var(--bg-surface); }
+
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
   }
 }
 
-/* Scrollbar personalizado */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #64748b; }
+/* ── Animación de ripple al cambiar tema ───────────────── */
+@keyframes themeRipple {
+  0%   { transform: scale(0);   opacity: 0.9; }
+  100% { transform: scale(200); opacity: 0;   }
+}
+.theme-ripple {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform-origin: center;
+  animation: themeRipple 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+.theme-ripple-dark  { background: #0a0f1e; }
+.theme-ripple-light { background: #f9fafb; }
+
+/* ── Animaciones generales ─────────────────────────────── */
+@keyframes fadeIn   { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideUp  { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+@keyframes bounceIn { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
+@keyframes shimmer  { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+
+.animate-fade      { animation: fadeIn   0.35s ease both; }
+.animate-slide-up  { animation: slideUp  0.3s  ease both; }
+.animate-bounce-in { animation: bounceIn 0.4s  cubic-bezier(0.36,0.07,0.19,0.97) both; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-muted) 25%, var(--bg-subtle) 50%, var(--bg-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  @apply rounded-lg;
+}
+
+/* ── Recharts dark mode ────────────────────────────────── */
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line { stroke: #1e2d45; }
+.dark .recharts-text { fill: #64748b; }
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-subtle); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }

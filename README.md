@@ -2,6 +2,8 @@
 
 Aplicación web full-stack para un supermercado, con catálogo de productos, carrito de compras, checkout, historial de pedidos y panel de administrador.
 
+Aplicación web full-stack para un supermercado, con catálogo de productos, carrito de compras, checkout, historial de pedidos y panel de administrador.
+
 ---
 
 ## 🛠️ Tecnologías
