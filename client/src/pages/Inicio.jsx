@@ -7,28 +7,28 @@ import ProductCard from '../components/products/ProductCard';
 // Slides del hero con texto personalizado
 const SLIDES_DEFAULT = [
   {
-    imagen: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1400&auto=format&fit=crop',
+    imagen: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&auto=format&fit=crop&q=85',
     titulo: 'Todo lo que necesitas,',
     subtitulo: 'en un solo lugar',
     descripcion: 'Productos frescos, mejores precios y la comodidad de comprar desde casa.',
     color: '#bbf7d0',
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=1400&auto=format&fit=crop',
+    imagen: 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=1920&auto=format&fit=crop&q=85',
     titulo: 'Frutas y verduras',
     subtitulo: 'frescas del día',
     descripcion: 'Seleccionadas directamente del campo para tu mesa.',
     color: '#fef08a',
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1400&auto=format&fit=crop',
+    imagen: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=1920&auto=format&fit=crop&q=85',
     titulo: 'Lácteos y más',
     subtitulo: 'calidad garantizada',
     descripcion: 'Los mejores productos lácteos al mejor precio.',
     color: '#bfdbfe',
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1400&auto=format&fit=crop',
+    imagen: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1920&auto=format&fit=crop&q=85',
     titulo: 'Bebidas y café',
     subtitulo: 'para cada momento',
     descripcion: 'Desde el café matutino hasta los refrescos del día.',
@@ -57,10 +57,20 @@ export default function Inicio() {
         setCategorias(catRes.data.categorias);
 
         // Usar imágenes de productos reales si tienen imagen
+        // Convertir URL de producto a alta resolución
+        const altaRes = (url) => {
+          if (!url) return url;
+          if (url.includes('unsplash.com')) {
+            const base = url.split('?')[0];
+            return base + '?w=1920&auto=format&fit=crop&q=85';
+          }
+          return url;
+        };
+
         const prodsConImagen = prods.filter(p => p.imagen && p.imagen.startsWith('http'));
         if (prodsConImagen.length >= 3) {
           setSlides(prodsConImagen.slice(0, 5).map((p, i) => ({
-            imagen:      p.imagen,
+            imagen:      altaRes(p.imagen),
             titulo:      SLIDES_DEFAULT[i % SLIDES_DEFAULT.length].titulo,
             subtitulo:   p.nombre,
             descripcion: p.descripcion || SLIDES_DEFAULT[i % SLIDES_DEFAULT.length].descripcion,
