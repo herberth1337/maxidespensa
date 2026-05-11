@@ -242,6 +242,3 @@ npm run install:all  # Instalar dependencias de client y server
 
 ---
 
-## 📄 Licencia
-
-MIT — Libre para uso educativo y comercial.
