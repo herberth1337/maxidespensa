@@ -318,10 +318,4 @@ app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../client/build/in
 NODE_ENV=production
 CLIENT_URL=https://tu-dominio.com
 DB_ENCRYPT=true
-```
 
----
-
-## 📄 Licencia
-
-MIT — Libre para uso educativo y comercial.
